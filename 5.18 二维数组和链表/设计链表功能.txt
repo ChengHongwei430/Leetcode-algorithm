@@ -1,0 +1,71 @@
+class MyLinkedList {
+public:
+
+    struct LinkNode{
+        int val;
+        LinkNode* next;
+        LinkNode(int val): val(val),next(NULL) {}
+        //不写LinkNode* next，val(0)表示，在执行{}之前使val=0
+    };
+
+    MyLinkedList() {
+        klsize=0;
+        dhead= new LinkNode(0);//LinkNode* d,不用额外申请新的节点
+    }
+    
+    int get(int index) {
+        if(index>klsize-1||index<0) return -1;//索引从0开始
+        LinkNode* p = dhead->next;//不能直接改变dhead
+        while(index--){
+            p=p->next;
+        }
+        return p->val;
+    }
+    
+    void addAtHead(int val) {
+        klsize++;
+        LinkNode* p=new LinkNode(val);
+        p->next=dhead->next;
+        dhead->next=p;
+    }
+    
+    void addAtTail(int val) {
+        klsize++;
+        LinkNode* p=new LinkNode(val);
+        LinkNode* t=dhead;
+        while(t->next) t=t->next;
+        t->next=p;
+    }
+    
+    void addAtIndex(int index, int val) {
+        if(index<0||index>klsize) return;
+        LinkNode* p=new LinkNode(val);
+        LinkNode* t=dhead;
+        while(index--) t=t->next;        
+        p->next=t->next;
+        t->next=p;  
+        klsize++;     
+    }
+    
+    void deleteAtIndex(int index) {
+        if(index<0||index>klsize-1) return;
+        LinkNode* t=dhead;
+        while(index--) t=t->next;
+        t->next=t->next->next;
+        klsize--;  
+    }
+
+private:
+    int klsize;//链表长度
+    LinkNode* dhead;//虚拟头结点
+};
+
+/**
+ * Your MyLinkedList object will be instantiated and called as such:
+ * MyLinkedList* obj = new MyLinkedList();
+ * int param_1 = obj->get(index);
+ * obj->addAtHead(val);
+ * obj->addAtTail(val);
+ * obj->addAtIndex(index,val);
+ * obj->deleteAtIndex(index);
+ */
