@@ -1,0 +1,40 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+
+        if(!head||!head->next) return head;
+        //可以直接返回的情况,先判断head,
+        //存在head==NULL的情况，没有next
+
+        ListNode *dhead= new ListNode(0,head);//虚拟头结点
+        ListNode *pre=dhead,*p=pre->next,*q=p->next;
+        while(p&&q){
+            //当链表置换结束时，不会自动跳出这个情况
+            ///我没有特殊处理
+            pre->next=q;
+            p->next=q->next;
+            q->next=p;
+            pre=p;
+
+            if(p->next) p=p->next;
+            else p=NULL;
+            if(p&&p->next) q=p->next;
+            //当使用p->next的时候一定要坚持p是否存在
+            else q=NULL;
+        }
+        p=dhead->next;
+        delete dhead;//两句话离的很久，我不知道是怎么编译的
+        return p;
+
+    }
+};
