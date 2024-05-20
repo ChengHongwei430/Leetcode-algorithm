@@ -1,0 +1,32 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        //更多的是数学思维，逻辑上简单
+        ListNode *fast=head,*slow=head;
+        while(fast&&fast->next){
+            //////不能直接写fast!=slow,初值是相等的
+            //快指针一次走两步，要保证不会越界
+            fast=fast->next->next;
+            slow=slow->next;
+            if(fast==slow) break;
+            ///少写了一个=居然被判超时，莫名其妙
+        }//找到快慢指针交点，由fast保留
+
+        if(!fast||!fast->next) return NULL;//无环返回
+      
+        slow=head;//慢指针回到起点
+        while(fast!=slow){
+            fast=fast->next;
+            slow=slow->next; 
+        }
+        return fast;
+    }
+};

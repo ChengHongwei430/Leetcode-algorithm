@@ -1,0 +1,34 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        
+        //确定两个链表的长度
+        ListNode *a=headA,*b=headB;
+        int lenA=0,lenB=0;
+        while(a){ lenA++; a=a->next; }
+        while(b){ lenB++; b=b->next; }
+        a=headA;
+        b=headB;//归位
+        int ab=lenA-lenB;
+        if(ab>=0) while(ab--) a=a->next;
+        else{
+            ab=-ab;//取反
+            while(ab--) b=b->next;
+        }
+        while(a!=b&&a&&b){
+            a=a->next;
+            b=b->next;
+        }
+        if(a&&b) return a;
+        else return NULL;
+        //第一次逻辑没问题，直接通过
+    }
+};
