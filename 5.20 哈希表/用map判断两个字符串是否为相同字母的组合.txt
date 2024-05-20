@@ -1,0 +1,25 @@
+#include<unordered_map>
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+
+        if(s.size()!=t.size()) return false;
+        unordered_map<char,int> m1,m2;
+        //建一个哈希表，存出现的字母和次数
+        for(int i=0;i<s.size();++i) m1[s[i]]++;
+        for(int i=0;i<t.size();++i) m2[t[i]]++;
+        unordered_map<char,int>::iterator it=m1.begin();
+        for(;it!=m1.end();++it){
+            //必须用指针箭头访问迭代器的成员
+            auto itt=m2.find(it->first);
+            if(itt==m2.end()) return false;
+            if(itt->second!=it->second) return false;
+            /////当您使用 m2.find(it->first)->second 时，
+            //如果在 m2 中未找到 it->first，
+            //那么 find() 函数将返回 m2.end()，
+            //然后您尝试访问 second 成员，
+            //这是不允许的，会导致运行时错误。
+        }
+        return true;
+    }
+};

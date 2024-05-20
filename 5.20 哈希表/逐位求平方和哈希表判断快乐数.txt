@@ -1,0 +1,30 @@
+
+# include<unordered_set>
+class Solution {
+public:
+
+    int getnums(int n){
+        int sum=0;
+        while(n){
+            sum+=(n%10)*(n%10);
+            n=n/10;
+            //从个位到高位逐个取平方
+        }
+        return sum;
+    };
+
+    bool isHappy(int n){
+
+        //首先从数学角度理解快乐数
+        //一个数各位的平方的和，会迭代变成1
+        //如果迭代出现了一个重复的数，就一定会无限循环
+        unordered_set<int> s;
+        while(s.find(n)==s.end()&&n!=1){//在哈希表中找不到
+            s.insert(n);//入表
+            n=getnums(n);//求和
+        }
+        if(n==1) return true;
+        else return false;
+
+    }
+};

@@ -1,0 +1,27 @@
+
+#include<unordered_map>
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+
+        unordered_map<int,int> m;
+        for(int i=0;i<nums.size();++i) {
+            //插入之前，需要考虑键值是否有重复
+            if ( 2*nums[i]==target && m.find(nums[i])!=m.end())
+                return {i,m.find(nums[i])->second};
+            //出现满足条件数字，且重复键值，把这种情况特殊处理
+            //不满足情况的重复也无所谓
+            m[nums[i]]=i;             
+        }
+        
+        //键值是值，值是下标
+        //必须要考虑unordered_map键值唯一,map也唯一,multimap不唯一的问题
+        unordered_map<int,int>::iterator it =m.begin();
+        for(;it!=m.end();++it)
+            if(m.find(target-(it->first))!=m.end()&&it!=m.find(target-(it->first)))
+            //同一个元素不能使用两遍
+                return {it->second,m.find(target-(it->first))->second};
+        return {};
+        //vector 可以直接使用{1,2,3}来初始化
+    }
+};

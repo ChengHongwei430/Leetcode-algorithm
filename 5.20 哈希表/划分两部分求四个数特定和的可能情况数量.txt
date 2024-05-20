@@ -1,0 +1,21 @@
+
+#include<unordered_map>
+class Solution {
+public:
+    int fourSumCount(vector<int>& nums1, vector<int>& nums2, vector<int>& nums3, vector<int>& nums4) {
+        //核心思路是将四个数分成两部分
+        //考虑a+b的情况，c+d的情况
+        //再考虑组合为0的可能性数量
+        unordered_map<int,int> ab;
+        for(int i:nums1) for(int j:nums2) ab[i+j]++;
+        ////////////新的for写法里，ij代表集合实际的值，而不是序号
+        ////////////每次都要明确键值和值的含义，保证键值唯一
+        //键值是和，值是次数
+        int count=0;
+        for(int i:nums3) for(int j:nums4){
+            if(ab.find(0-i-j)!=ab.end())
+                count+=ab.find(0-i-j)->second;
+        }
+        return count;
+    }
+};

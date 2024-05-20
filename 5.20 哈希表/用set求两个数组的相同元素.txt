@@ -1,0 +1,22 @@
+
+#include<unordered_set>
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+
+        unordered_set<int> s1,s2;//建立两个哈希表
+        //插入
+        for(int i=0;i<nums1.size();++i) s1.insert(nums1[i]);
+        for(int i=0;i<nums2.size();++i) s2.insert(nums2[i]);
+
+        //查找
+        unordered_set<int>::iterator it=s1.begin();
+        nums1.clear();//清空nums1,用来存结果
+        
+        for(;it!=s1.end();++it){
+            if(s2.find(*it)!=s2.end()) nums1.push_back(*it);
+        }
+        //最后使用nums1存储最终结果
+        return nums1;
+    }
+};
