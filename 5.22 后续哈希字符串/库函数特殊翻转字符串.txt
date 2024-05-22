@@ -1,0 +1,23 @@
+class Solution {
+public:
+    string reverseStr(string s, int k) {
+
+        int len=s.size();
+
+        if(len<=k){
+            reverse(s.begin(),s.end());
+        }else if(len>k&&len<=2*k){
+            reverse(s.begin(),s.begin()+k);
+        }else{
+            int x=0;
+            while(k+x<=len){
+                reverse(s.begin()+x,s.begin()+x+k);
+                x+=2*k;
+            }
+            //此时已经x+=2*k了，应该直接进行判断
+            if(x<=len) reverse(s.begin()+x,s.end());
+        }
+        return s;
+
+    }
+};

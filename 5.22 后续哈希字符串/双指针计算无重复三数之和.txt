@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> Ve;
+        sort(nums.begin(),nums.end());//排序
+        int left,right=nums.size()-1;
+        for(int i=0;i<nums.size();++i){
+            if (nums[i]>0) break;
+            left=i+1;
+            int a=left,b=right;
+            if(i>0&&nums[i]==nums[i-1]) continue;/////////左边去重
+            while(a<b){
+                if(nums[i]+nums[a]+nums[b]<0) a++;
+                else if(nums[i]+nums[a]+nums[b]>0) b--;
+                else {
+                    Ve.push_back({nums[i],nums[a],nums[b]});
+                    while(a<b&&nums[a+1]==nums[a]) a++;/////////这里只能右边去重
+                    while(a<b&&nums[b-1]==nums[b]) b--;
+                    a++;
+                    b--;//当找到满足条件的解时，同时改变标签
+                }
+            }
+        }
+        return Ve;
+    }
+};

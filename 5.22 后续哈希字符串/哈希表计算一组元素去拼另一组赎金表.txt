@@ -1,0 +1,20 @@
+#include<unordered_map>
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        unordered_map<char,int> r,m;
+        for(int i=0;i<ransomNote.size();++i){
+            r[ransomNote[i]]++;//键值是数，值是次数
+        }
+        for(int i=0;i<magazine.size();++i){
+            m[magazine[i]]++;//键值是数，值是次数
+        }
+        unordered_map<char,int>::iterator it=r.begin();
+        //基于r表去找s表元素
+        for(;it!=r.end();++it){
+            if (m.find(it->first)==m.end()) return false;
+            if ((m.find(it->first)->second)<(it->second)) return false;
+        }
+        return true;
+    }
+};
