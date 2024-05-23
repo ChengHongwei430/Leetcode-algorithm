@@ -1,0 +1,46 @@
+
+
+#include<iostream>//48/65/97是常用的三个ASCII值
+#include<vector>
+#include<string>
+
+using namespace std;
+
+int main(){
+    
+    string s;
+    cin>>s;
+    
+    int count=0;//记录数字的数量
+    int lens=s.size();
+    for(int i=0;i<lens;++i){
+        if(s[i]<='9') count++;
+    }
+    int lenss=lens+5*count;
+    vector<char> ss(lenss);//长度使用（）
+    
+    int j=lenss-1;//新数组
+    for(int i=lens-1;i>=0;--i){//原数组
+        
+        if(s[i]<='9'){//如果是数字
+            ss[j--]='r';
+            ss[j--]='e';
+            ss[j--]='b';
+            ss[j--]='m';
+            ss[j--]='u';
+            ss[j--]='n';
+        }
+        else{
+            ss[j--]=s[i];
+            
+        }
+        
+    }
+    
+    for(int i=0;i<lenss;++i){
+        cout<<ss[i];
+    }
+    cout<<endl;
+    
+    
+}

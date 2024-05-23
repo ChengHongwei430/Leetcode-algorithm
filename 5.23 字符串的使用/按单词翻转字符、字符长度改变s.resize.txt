@@ -1,0 +1,39 @@
+
+//字符翻转函数
+void reversechar(string &s,int a,int b){
+    int len =b-a+1;
+    for(int i=0;i<len/2;++i){
+        char temp=s[a+i];
+        s[a+i]=s[b-i];
+        s[b-i]=temp;
+    }
+};
+
+class Solution {
+public:
+    string reverseWords(string s) {
+             
+        int k=0;
+        for(int i=0;i<s.size();++i){
+            if(s[i]!=' ') s[k++]=s[i];
+            if( k!=0 && i!=s.size()-1 && s[i]==' ' && s[i+1]!=' ') s[k++]=s[i];
+            //删除字符串前后的空格 
+        }
+        s.resize(k);//字符串长度改变函数
+        //vector s 
+        //s.reverse(s.bgin(),s.end());容器翻转函数
+        //sort(s.bgin(),s.end());容器排序函数
+
+        reversechar(s,0,s.size()-1);//整体翻转
+
+        int lasti=0;
+        for(int i=0;i<s.size();++i){//按单词翻转
+            if(s[i]==' '){
+                reversechar(s,lasti,i-1);
+                lasti=i+1;
+            }
+            if(i==s.size()-1) reversechar(s,lasti,i);
+        }
+        return s;        
+    }
+};
