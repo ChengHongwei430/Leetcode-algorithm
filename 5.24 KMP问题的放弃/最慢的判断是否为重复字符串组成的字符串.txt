@@ -1,0 +1,34 @@
+
+#include<unordered_map>
+#include<vector>
+
+class Solution {
+public:
+    bool repeatedSubstringPattern(string s) {
+
+        if(s.size()==1) return 0;
+        int count=1;
+        vector<char> ss;
+        ss.push_back(s[0]);//取最小字符串
+
+        while(count<=s.size()/2){
+
+            bool flag=0;
+
+            for(int i=count;i<s.size();i+=count) {
+                for(int j=0;j<count;++j) if(s[i+j]!=ss[j]) {
+                    flag=1;
+                    break;
+                }
+                if(flag) break;
+            }
+
+            if(!flag) return 1;
+            count++;
+            ss.push_back(s[count-1]);
+            cout<<s[count]<<" "<<count<<" ";
+        }     
+
+        return 0;
+    }
+};
