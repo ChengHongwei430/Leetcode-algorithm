@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        //使用滑动窗口来找到满足特定条件的子串最小长度
+
+        int sum=nums[0];//建立初始窗口
+
+        int left=0;//窗口第一个元素下标
+        int right=1;//窗口的下一个元素下标
+
+        int minlen =INT32_MAX;//记录最小窗口长度
+
+        if(sum>=target) minlen=1;//初始情况
+
+        while(right<nums.size()){
+
+            sum+=nums[right++];//加入新元素
+
+            while(sum>=target){
+                //如果满足条件，要记录
+                if(right-left<minlen) minlen=right-left;
+                sum-=nums[left++];//删除第一个元素
+            }
+        }
+        return minlen == INT32_MAX?0:minlen;
+    }
+};
