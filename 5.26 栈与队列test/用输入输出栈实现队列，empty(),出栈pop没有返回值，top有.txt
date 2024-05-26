@@ -1,0 +1,70 @@
+#include<stack>
+
+class MyQueue {
+public:
+
+    stack<int> instack;
+    stack<int> outstack;
+
+    MyQueue() {
+
+    }
+    
+    void push(int x) {
+        instack.push(x);//元素加入In栈
+    }
+    
+    int pop() {
+        ///////////////////////////stack出栈没有返回值
+        if(!outstack.empty()){
+            int result=outstack.top();
+            outstack.pop();
+            return result;
+        } 
+        //out栈不为空，直接出一个就行
+        //在out栈不为空时，不能将in栈中元素加入
+        else{
+            while(!instack.empty()){
+                outstack.push(instack.top());
+                instack.pop();
+            } //如果in栈不为空，全部进入out栈
+            if(!outstack.empty()){
+                int result=outstack.top();
+                outstack.pop();
+                return result;
+            }
+            else{
+                return outstack.top();
+            }
+        }
+    }
+    
+    int peek() {
+        ///////////////////////////stack出栈没有返回值
+        if(!outstack.empty()) return outstack.top();
+        //out栈不为空，直接出一个就行
+        //在out栈不为空时，不能将in栈中元素加入
+        else{
+            while(!instack.empty()){
+                outstack.push(instack.top());
+                instack.pop();
+            } 
+            //如果in栈不为空，全部进入out栈
+            return outstack.top();;
+        }
+    }
+    
+    bool empty() {
+        if(outstack.empty()&&instack.empty()) return 1;
+        else return 0;
+    }
+};
+
+/**
+ * Your MyQueue object will be instantiated and called as such:
+ * MyQueue* obj = new MyQueue();
+ * obj->push(x);
+ * int param_2 = obj->pop();
+ * int param_3 = obj->peek();
+ * bool param_4 = obj->empty();
+ */
