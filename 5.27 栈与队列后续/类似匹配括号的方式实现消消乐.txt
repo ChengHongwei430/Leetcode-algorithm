@@ -1,0 +1,30 @@
+
+#include<stack>
+class Solution {
+public:
+    string removeDuplicates(string s) {
+        //类似括号匹配
+        stack<char> st;
+        for(int i=0;i<s.size();++i){
+            st.push(s[i]);
+            while(st.size()>=2){
+                char temp1 = st.top();//出栈两个元素
+                st.pop();
+                char temp2 = st.top();
+                st.pop();
+                if(temp1!=temp2){
+                    st.push(temp2);
+                    st.push(temp1);
+                    break;
+                }
+            }
+        }
+        string ss(st.size(),'\0');
+        for(int i=0;i<ss.size();++i){
+            char temp = st.top();
+            st.pop();
+            ss[ss.size()-i-1]=temp;
+        }       
+        return ss;
+    }
+};

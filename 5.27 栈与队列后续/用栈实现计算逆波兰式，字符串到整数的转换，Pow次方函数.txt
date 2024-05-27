@@ -1,0 +1,59 @@
+
+#include<stack>
+
+void countf(stack<int> &s,char c){//出栈两个值进行计算
+    int temp2=s.top();
+    s.pop();
+    int temp1=s.top();
+    s.pop();
+    if(c=='+') s.push(temp1+temp2);
+    if(c=='-') s.push(temp1-temp2);
+    if(c=='*') s.push(temp1*temp2);
+    if(c=='/') s.push(temp1/temp2);
+    //cout<< s.top() <<" "<<endl;
+}
+
+
+
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        //栈实现逆波兰式
+
+        stack<int> st;
+        for(int i=0;i<tokens.size();++i){
+            
+            string x=tokens[i];
+
+            if(x.size()>1){//取出多位的数字
+            int num =0,n=x.size();
+                int xx;
+                if(x[0]!='-'){
+                    while(n){
+                        xx=(x[n-1]-'0');
+                        num+=xx*pow(10,x.size()-n);
+                        n--;
+                    }
+                    st.push(num);
+                }else{//考虑负值的情况
+                    n=n-1;
+                    while(n){
+                        xx=(x[n]-'0');
+                        num+=xx*pow(10,x.size()-n-1);
+                        n--;
+                    }
+                    num=0-num;
+                    st.push(num);
+                }
+                //cout<<num<<" "<<endl;
+            }
+
+            else{
+                if(x[0]>='0'&&x[0]<='9') st.push(x[0]-'0');//单位数字
+                else countf(st,x[0]);//符号
+            }
+            
+        }
+        return st.top();
+    }
+};

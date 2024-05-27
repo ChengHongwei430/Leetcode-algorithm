@@ -1,0 +1,38 @@
+
+#include<queue>//用暴力法会超时
+
+int returnmaxqueue(queue<int> qu){//求队列最大值
+    int maxs=INT32_MIN;
+    for(int i=0;i<qu.size();++i){
+        int temp=qu.front();
+        qu.pop();//头出尾出
+        maxs=temp>maxs? temp:maxs;
+        qu.push(temp);
+    }
+    return maxs;
+}
+
+class Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+        //用队列实现滑动窗口
+        //不想用队列，也可以用双指针
+        queue<int> qu;
+        vector<int> v;
+        if(k>nums.size()) return {0};
+        int maxs;
+        for(int i=0;i<k;++i) qu.push(nums[i]);
+        maxs=returnmaxqueue(qu);//初始状态
+        v.push_back(maxs);
+
+        for(int i=k;i<nums.size();++i){
+            qu.push(nums[i]);
+            qu.pop();
+            maxs=returnmaxqueue(qu);
+            v.push_back(maxs);
+        }
+
+        return v;
+
+    }
+};

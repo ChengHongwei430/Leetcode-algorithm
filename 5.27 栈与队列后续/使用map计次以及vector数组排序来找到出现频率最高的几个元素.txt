@@ -1,0 +1,31 @@
+
+#include<unordered_map>
+#include<vector>
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int,int> ma;
+        vector<int> ve;
+        vector<int> v;
+        for(int i=0;i<nums.size();++i) ma[nums[i]]++;
+        auto it=ma.begin();
+        for(;it!=ma.end();++it){
+            //int count=it->second;
+            //while(count--) 
+            ve.push_back(it->second);
+        }
+        sort(ve.begin(),ve.end());//递增排序
+        reverse(ve.begin(),ve.end());//递减
+        for(int i=0;i<k;++i){
+            auto it=ma.begin();
+            for(;it!=ma.end();++it){
+                if(it->second==ve[i]){
+                    v.push_back(it->first);                  
+                    ma.erase(it->first);//对于找到过的踢出去
+                    break;
+                }
+            }               
+        }
+        return v;
+    }
+};
