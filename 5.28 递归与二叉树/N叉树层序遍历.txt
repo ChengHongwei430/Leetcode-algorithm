@@ -1,0 +1,53 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    vector<Node*> children;
+
+    Node() {}
+
+    Node(int _val) {
+        val = _val;
+    }
+
+    Node(int _val, vector<Node*> _children) {
+        val = _val;
+        children = _children;
+    }
+};
+*/
+
+class Solution {
+public:
+    vector<vector<int>> levelOrder(Node* root) {
+
+        //使用队列进行二叉树层序遍历（广度遍历）
+        //本质上就是在出队一个元素时，将其左右子入队，难点在于如何确定分层序号
+
+        vector<vector<int>> queueq;
+
+        queue<Node*> que;//队列用来存节点
+        if(root) que.push(root);
+        while(!que.empty()){
+            int sizeq = que.size();//////////////////////////确定这一层的规模
+            //因为每一层在在全部出队时，会将下一层的所有节点入队
+
+            vector<int> ve;//建一个数组来存放这一层的节点值
+            for(int i=0;i<sizeq;++i){
+                Node* temp = que.front();//这里是核心，控制每一层的规模
+                que.pop();
+                ve.push_back(temp->val);
+
+                for(int j=0;j<temp->children.size();++j){
+                    que.push(temp->children[j]);
+                }
+                
+            }
+            queueq.push_back(ve);
+
+        }
+        return queueq;
+        
+    }
+};

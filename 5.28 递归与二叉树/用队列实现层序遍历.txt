@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        //使用队列进行二叉树层序遍历（广度遍历）
+        //本质上就是在出队一个元素时，将其左右子入队，难点在于如何确定分层序号
+
+        vector<vector<int>> queueq;
+
+        queue<TreeNode*> que;//队列用来存节点
+        if(root) que.push(root);
+        while(!que.empty()){
+            int sizeq = que.size();//////////////////////////确定这一层的规模
+            //因为每一层在在全部出队时，会将下一层的所有节点入队
+
+            vector<int> ve;//建一个数组来存放这一层的节点值
+            for(int i=0;i<sizeq;++i){
+                TreeNode* temp = que.front();//这里是核心，控制每一层的规模
+                que.pop();
+                ve.push_back(temp->val);
+                if(temp->left) que.push(temp->left);
+                if(temp->right) que.push(temp->right);
+            }
+            queueq.push_back(ve);
+
+        }
+        return queueq;
+
+    }
+};
