@@ -1,0 +1,46 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+    Node(int _val, Node* _left, Node* _right, Node* _next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+*/
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+
+        //使用队列进行二叉树层序遍历（广度遍历）
+        //本质上就是在出队一个元素时，将其左右子入队，难点在于如何确定分层序号
+
+        queue<Node*> que;//队列用来存节点
+        if(root) que.push(root);
+        while(!que.empty()){
+            int sizeq = que.size();//////////////////////////确定这一层的规模
+            //因为每一层在在全部出队时，会将下一层的所有节点入队
+
+            Node* last;
+            for(int i=0;i<sizeq;++i){              
+                Node* temp = que.front();//这里是核心，控制每一层的规模
+                que.pop();
+                if(i>0) last->next=temp;
+                if(i==sizeq-1) temp->next=NULL;
+                if(temp->left) que.push(temp->left);
+                if(temp->right) que.push(temp->right);
+                last=temp;//必须放到这一代的连接if(i>0) last->next=temp;之后
+            }
+        }
+        return root;
+        
+    }
+};
