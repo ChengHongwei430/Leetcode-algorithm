@@ -1,0 +1,43 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<int> postorderTraversal(TreeNode* root) {
+        
+        //同一模式的非递归二叉树遍历
+        vector<int> ve;
+        stack<TreeNode*> st;
+        if(root) st.push(root);
+        while(!st.empty()){
+            TreeNode* temp = st.top();//出栈栈顶元素
+            st.pop();
+            if(temp){
+               
+                st.push(temp);
+                st.push(NULL);//输出标记
+                
+                if(temp->right) st.push(temp->right);
+                if(temp->left) st.push(temp->left);
+
+            }else{
+
+                temp = st.top();//出栈栈顶元素
+                cout<<temp->val<<endl;
+                ve.push_back(temp->val);
+                st.pop();
+                
+            }
+        }
+        return ve;
+
+    }
+};
