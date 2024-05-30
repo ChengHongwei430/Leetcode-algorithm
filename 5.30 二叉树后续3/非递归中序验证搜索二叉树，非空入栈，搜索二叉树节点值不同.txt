@@ -1,0 +1,41 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+ //非递归中序实现
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        
+        stack<TreeNode*> st;
+        vector<int> ve;
+        if(root) st.push(root);///////////////根节点存在，入栈
+        while(!st.empty()){
+            TreeNode* temp = st.top();
+            st.pop();
+            if(temp){
+                if(temp->right) st.push(temp->right);
+                st.push(temp);
+                st.push(NULL);//标记
+                if(temp->left) st.push(temp->left);
+            }
+            else{
+                temp = st.top();
+                st.pop();
+                ve.push_back(temp->val);
+            }
+        }//统一格式的中序遍历
+
+        cout<<ve.size();
+
+        for(int i=1;i<ve.size();++i) if(ve[i]<=ve[i-1]) return 0;//等于也不行
+        return 1;
+    }
+};

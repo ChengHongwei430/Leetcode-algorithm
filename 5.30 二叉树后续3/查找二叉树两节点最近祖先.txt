@@ -1,0 +1,36 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+void TreePath(TreeNode* root,TreeNode* p,vector<TreeNode*> path,vector<TreeNode*>& result){
+    if(!root) return;
+    path.push_back(root);//path用来记录递归过程中的当前路径
+    if(root==p) result=path;//result用来保存特定路径
+    TreePath(root->left,p,path,result);
+    TreePath(root->right,p,path,result);
+}//打印路径需要两个vector数组，一个记录当前路径，一个保存特殊路径
+
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+
+        vector<TreeNode*> path;
+        vector<TreeNode*> resultp;
+        vector<TreeNode*> resultq;
+        TreePath(root,p,path,resultp);
+        TreePath(root,q,path,resultq);
+
+        cout<<resultp.size()<< "-" <<resultq.size();
+        int i=0;
+        for(;i<resultp.size()&&i<resultq.size();++i) if(resultp[i]!=resultq[i]) break;
+        
+        return resultp[i-1];//返回最后一个
+        
+    }
+};
