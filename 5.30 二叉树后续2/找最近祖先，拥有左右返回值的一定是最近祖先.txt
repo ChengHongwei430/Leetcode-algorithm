@@ -1,0 +1,35 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+
+        if(!root) return NULL;
+        if(root==p) return p;
+        if(root==q) return q;
+
+        TreeNode* l=lowestCommonAncestor(root->left,p,q);
+        TreeNode* r=lowestCommonAncestor(root->right,p,q);
+
+        if(l&&r) return root;
+        //返回这个可行的祖先
+        else if(!l&&!r) return NULL;
+        else if(l&&!r) return l;
+        else return r;  
+
+        //核心思想是使用后序遍历实现回溯，在最后一次经过一个点时，通过返回值来描述这个点的性质
+        //如果其子含p就返回p，含q就返回q，如果都含有表示满足条件，就返回自己
+        //只要发现一个节点其左右都有返回值，就说明满足条件，pq都是唯一的
+        //最近祖先的祖先也不会两个子树都有返回值，因为pq唯一
+        //拥有左右返回值的一定是最近祖先
+    }
+};
