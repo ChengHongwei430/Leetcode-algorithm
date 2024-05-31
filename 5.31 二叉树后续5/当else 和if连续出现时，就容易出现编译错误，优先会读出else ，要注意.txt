@@ -1,0 +1,40 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+
+        //先要判断两个节点值哪个大
+        int maxp=p->val>q->val?p->val:q->val;
+        int minp=p->val<q->val?p->val:q->val;
+        //cout<<maxp<<" "<<minp;
+    
+        if(!root) return NULL;
+        queue<TreeNode*> qu;
+        qu.push(root);//根存在，入队
+
+        while(!qu.empty()){
+            root=qu.front();//队首元素 
+            qu.pop();
+            int rp=root->val;
+            cout<<rp<<" "<<minp<<" "<<maxp<<"-";
+            if(rp>=minp&&rp<=maxp) break;
+            //////////////////////////////第一次碰见的满足条件的节点，一定就是最近的祖先       
+            else if(rp>maxp) {
+                if(root->left) qu.push(root->left);
+            }
+            ////////////////////当else 和if连续出现时，就容易出现编译错误，优先会读出else ，要注意
+            else if(root->right) qu.push(root->right);                 
+        }//root满足条件
+
+        return root;       
+    }
+};
