@@ -1,0 +1,47 @@
+class Solution {
+
+private:
+    void backtracking(int x,int n,int k,int starti,vector<int> path,vector<vector<int>> &result){
+        
+        //&path和path不重要，重要的是看改变其的操作path.push_back(i)在哪一部分,是否包裹在递归函数里
+        //要么就写引用加回溯
+        //要么就形参，把变化放到递归函数里
+
+        if(path.size()==k){
+            result.push_back(path);
+            return;
+        }//组合的长度达到要求
+
+        for(int i=starti;n-i+1>=k-path.size();++i){
+            //剩余的可选数字数量要大于还需要的数字数量
+
+            path.push_back(i);
+            cout<<x<<"-"<<path.size()<<endl;
+
+            //vector<int> temp=path;
+            //temp.push_back(i);//如果我传一个临时的变量进去，那就不需要回溯了
+            
+            backtracking(x+1,n,k,i+1,path,result);//下一次起点不同
+
+            path.pop_back();//回溯
+            //path使用的是引用，所以要回溯
+            //因为path的增加是在迭代之前完成的，所以即使返回了上一层，增加的依然不会消失
+            //除非传递值的操作在递归函数里完成，那样就不需要回溯了
+
+            //backtracking(root->left,x);
+            //与
+            //root->left;
+            //backtracking(root,x);
+            //存在区别
+        }
+    }
+
+
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> path;
+        vector<vector<int>> result;
+        backtracking(1,n,k,1,path,result);
+        return result;
+    }
+};
