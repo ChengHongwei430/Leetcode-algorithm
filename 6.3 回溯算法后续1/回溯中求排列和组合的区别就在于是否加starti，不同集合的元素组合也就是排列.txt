@@ -1,0 +1,25 @@
+
+void backtracking(vector<int>& candidates, int target,int starti,int sum,vector<int> &path,vector<vector<int>> &result){   
+    if(sum>target) return;//超过不计算
+    if(sum==target) {result.push_back(path); return;}
+    for(int i=starti;i<candidates.size();++i){
+        //对于从一个集合中取可以重复的，也需要starti
+        //因为我们不需要区分223和232两种，只有在求排列时需要，组合不需要，
+        //所以还是需要starti，但不需要加1，因为允许同一个数字重复
+        path.push_back(candidates[i]);
+        sum+=candidates[i];
+        backtracking(candidates,target,i,sum,path,result);
+        path.pop_back();
+        sum-=candidates[i];
+    }
+}
+
+class Solution {
+public:
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<int> path;
+        vector<vector<int>> result;
+        backtracking(candidates,target,0,0,path,result);
+        return result;
+    }
+};

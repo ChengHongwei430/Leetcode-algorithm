@@ -1,0 +1,33 @@
+
+void backtracking(int k,int n,int sum,int starti,vector<int> &path,vector<vector<int>> &result){
+    
+    if(sum>n) return;//超过不计算
+
+    if(sum==n&&path.size()==k){
+        result.push_back(path);
+        return;
+    }
+
+    //for(int i=starti;i<=9;++i){
+    for(int i=starti;10-k+path.size()>=i;++i){
+        //剩余可用数量大于还需要的数量
+        //把变量放到一边，不然就会出错，例如9-i+1>=k-path.size()就报错
+        path.push_back(i);
+        sum+=i;
+        backtracking(k,n,sum,i+1,path,result);//这里的起始遍历点还是i+1,而不是starti+1
+        path.pop_back();//////出栈不需要参数
+        sum-=i;
+    }
+}
+
+class Solution {
+public:
+    vector<vector<int>> combinationSum3(int k, int n) {
+        
+        vector<int> path;
+        vector<vector<int>> result;
+        backtracking(k,n,0,1,path,result);
+        return result;
+
+    }
+};

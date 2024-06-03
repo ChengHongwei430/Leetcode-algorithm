@@ -1,0 +1,36 @@
+
+bool isNeedString(string s,int low,int high){
+    //if(high==1) cout<<s[high]<<endl;
+    if(low>high) return 0;
+    if(low==high) return 1;
+    while(low<=high) if(s[low++]!=s[high--]) return 0;
+    return 1;
+};//判断回文子串
+
+void backstracking(string s,int starti,vector<string> &path,vector<vector<string>> &result){
+    if(starti==s.size()){//切割到最后一个元素时
+        result.push_back(path);
+        return;
+    }
+    for(int i=starti;i<s.size();++i){
+        if(isNeedString(s,starti,i)){//增加一个字符后形成回文       
+            path.push_back(string(s.begin()+starti,s.begin()+i+1));
+            //使用基于迭代器的产生字符串方法string(s.begin()+starti,s.begin()+i+1)，
+	    //后面一项应该是最后一个元素的下一位
+            //string str = s.substr(starti,i-starti+1);//起点，长度
+            //path.push_back(str); 
+            backstracking(s,i+1,path,result);
+            path.pop_back();         
+        }else continue;//查看下一个位置能否切割    
+    }
+}
+
+class Solution {
+public:
+    vector<vector<string>> partition(string s) {
+        vector<string> path;
+        vector<vector<string>> result;
+        backstracking(s,0,path,result);
+        return result;
+    }
+};

@@ -1,0 +1,35 @@
+
+void backtracking(vector<int>& candidates, int target,int starti,int sum,vector<int> &path,vector<vector<int>> &result){   
+    if(sum>target) return;//超过不计算
+    if(sum==target) {result.push_back(path); return;}
+    for(int i=starti;i<candidates.size();++i){
+        //对于从一个集合中取可以重复的，也需要starti
+        //因为我们不需要区分223和232两种，只有在求排列时需要，组合不需要，
+        //所以还是需要starti，但不需要加1，因为允许同一个数字重复
+
+        if(i>starti&&candidates[i]==candidates[i-1]) continue;//如果同一个层取两个一样的数，会得到相同的结果
+
+        path.push_back(candidates[i]);
+        sum+=candidates[i];
+        backtracking(candidates,target,i+1,sum,path,result);
+        path.pop_back();
+        sum-=candidates[i];
+    }
+}
+
+class Solution {
+public:
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vector<int> path;
+        vector<vector<int>> result;
+
+        //要实现对实验结果的去重，首先需要对数组排序，排序后重复的数字就在一起
+        sort(candidates.begin(),candidates.end());//对容器vector排序
+
+        backtracking(candidates,target,0,0,path,result);
+
+
+        return result;
+    }
+};
+//回溯结果去重的方法，先排序然后每层讨论是否选出了和之前相同的数，不同的层之间可以相同，也就是starti不变

@@ -1,0 +1,41 @@
+bool isNeedString(string s,int low,int high){
+    if(high<low||high-low>2) return 0;//太长太短都不对
+    if(s[low]=='0'&&high>low) return 0;//不能以0开头，记得s是字符串，要用'0'
+    int num=0;
+    for(int i=low;i<=high;++i){
+        int temp=s[i] -'0';
+        num = num*10 + temp;
+    }
+    if(num>=0&&num<=255) return 1;
+    else return 0;
+};//把判断的部分独立出来
+
+void backstracking(string &s,int starti,int pointcounts,vector<string> &result){
+    
+    if(pointcounts==3){//切割到最后一个元素时
+        if(isNeedString(s,starti,s.size()-1)) result.push_back(s);//直接使用s来保存临时结果
+        return;
+    }    
+    for(int i=starti;i<s.size();++i){
+        if(isNeedString(s,starti,i)&&pointcounts<=3){                  
+            s.insert(s.begin() + i + 1 , '.');
+            //s.push_back('.');//不是在数组末尾加点
+            pointcounts++;
+            backstracking(s,i+2,pointcounts,result);
+            //s.pop_back();
+            s.erase(s.begin() + i + 1); 
+            pointcounts--;         
+        }else break;
+    }
+}
+
+class Solution {
+public:
+    vector<string> restoreIpAddresses(string s) {       
+        string path;
+        vector<string> result;
+        int pointcounts=0;
+        backstracking(s,0,pointcounts,result);
+        return result;
+    }
+};

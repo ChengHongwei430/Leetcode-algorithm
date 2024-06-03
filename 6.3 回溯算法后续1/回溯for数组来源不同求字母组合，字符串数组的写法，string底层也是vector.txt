@@ -1,0 +1,46 @@
+
+string sumstring[10]={
+    "",
+    "",
+    "abc",
+    "def",
+    "ghi",
+    "jkl",
+    "mno",
+    "pqrs",
+    "tuv",
+    "wxyz"//字符串数组内部字符串长度不同
+};//定义一个基本字符串
+
+void backtracking(string &digits,int x,string &path,vector<string> &result){
+    
+    if(path.size()==digits.size()){
+        result.push_back(path);
+        return;
+    }
+   
+    int  tempi = digits[x]-'0';//取第x个数字
+    string temps=sumstring[tempi];
+
+    for(int i=0;i<temps.size();++i){
+        path.push_back(temps[i]);///////////////////////字符串的底层也是vector
+        backtracking(digits,x+1,path,result);//取下一层的数字
+        path.pop_back();
+    }
+ 
+}
+
+
+
+
+class Solution {
+public:
+    vector<string> letterCombinations(string digits) {
+        //电话号码在遍历时，for所遍历的数组不同，来自不同的字母组合
+        if(digits.size()==0) return {};
+        string path;
+        vector<string> result;
+        backtracking(digits,0,path,result);
+        return result;
+    }
+};
