@@ -1,0 +1,42 @@
+
+//对于组合，就是starti,重复就是先排序
+//对于子集，就是所有条件都保存，不加return,不允许改序，就用set保存一层使用过的
+//对于排列，不同层不能使用用过的元素，同时元素可能出现重复，所以用vector<bool>最好
+
+//对于同一层的元素去重，一定要排序，单纯使用set还是可能会出现重复
+//不同层的去重就使用vector<bool>
+
+//对于含有重复元素的数组求全排列不能使用set区分不同层数字，因为是可能出现重复的
+//12和21的重复情况，之所以递增子集不会出现，也就是因为要求子集递增，不可能这样重复，因此才能用set
+//所以不同层还是使用排序处理最保险
+//使用vector<bool> used更合理
+
+void backstracking(vector<int>& nums,vector<int>& path,vector<vector<int>> &result,vector<bool> &used){
+    if(path.size()==nums.size()) {
+        result.push_back(path);
+        return;
+    }
+    unordered_set<int> use;
+    for(int i=0;i<nums.size();++i){
+        if(i>0&&use.find(nums[i])!=use.end()) continue;//已经插入过
+        if(used[i]) continue;
+        else{
+            use.insert(nums[i]);
+            used[i]=1;
+            path.push_back(nums[i]);
+            backstracking(nums,path,result,used);
+            path.pop_back();
+            used[i]=0;
+        }      
+    }
+}
+class Solution {
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        vector<int> path;
+        vector<vector<int>> result;
+        vector<bool> used(nums.size(),0);//需要初始都是false
+        backstracking(nums,path,result,used);
+        return result;
+    }
+};

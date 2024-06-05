@@ -1,0 +1,23 @@
+//组合问题就是加条件取出来
+//排列问题就是不要starti
+//允许重复的组合问题就是starti+1
+//切割问题就是要把starti作为切割线来使用，保存字段，而不是完整的数组
+
+void backstracking(int starti,vector<int>& nums,vector<int>& path,vector<vector<int>> &result){
+    //if()//不需要条件，都要
+    result.push_back(path);
+    for(int i=starti;i<nums.size();++i){
+        path.push_back(nums[i]);
+        backstracking(i+1,nums,path,result);
+        path.pop_back();
+    }
+}
+class Solution {
+public:
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<int> path;
+        vector<vector<int>> result;
+        backstracking(0,nums,path,result);
+        return result;
+    }
+};

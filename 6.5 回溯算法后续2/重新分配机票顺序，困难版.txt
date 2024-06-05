@@ -1,0 +1,62 @@
+//multiset就是允许重复的，但允许重复我还用上面哈希，平时都不用
+
+//最难的一点就是该如何保存数据
+//unordered_map<string,map<string,int>> 这个结构非常牛逼
+//unordered_map<出发机场,map<到达机场,机票数量>>
+//map会自动按字母或数字排序，机票数量记录已经使用过的
+
+bool backtracking(int ticketsize,unordered_map<string,map<string,int>> ma,vector<string> &result){
+    
+    if(result.size()==ticketsize) return true;
+
+    //////////这一段的逻辑我能懂，但我一时半会真的写不出来/////////////////
+    for (pair<const string, int>& target : ma[result[result.size() - 1]]) {
+        if (target.second > 0 ) { // 记录到达机场是否飞过了
+            result.push_back(target.first);
+            target.second--;
+            if (backtracking(ticketsize,ma,result)) return true;
+            result.pop_back();
+            target.second++;
+        }
+    }
+    //////////////////////////////////////////////////////////////
+
+    return false;
+
+}
+
+
+
+
+
+class Solution {
+public:
+    vector<string> findItinerary(vector<vector<string>>& tickets) {
+
+        unordered_map<string,map<string,int>> ma;//记录结构
+
+        for(auto it=tickets.begin();it!=tickets.end();++it){
+            vector<string> temp=*it;//一张票
+            if(ma.find(temp[0])!=ma.end()){//出发站相同
+                map<string,int> t = (ma.find(temp[0])->second);//取出出发站的记录
+                if(t.find(temp[1])!=t.end()){//存在一张一模一样的机票
+                    t.find(temp[1])->second++;                 
+                }else{
+                    t[temp[1]]++;
+                }
+                ma.find(temp[0])->second=t;//保存修改
+            }else{
+                ma[temp[0]][temp[1]]++;//////////////////////极致简单的多重map添加方法
+                //unordered_map<string,map<string,int>>
+            }
+        }
+
+        vector<string> result;
+        result.push_back("JFK"); // 起始机场
+        backtracking(tickets.size()+1,ma,result);
+
+        cout<<ma.size()<<endl;
+        return result;
+
+    }
+};

@@ -1,0 +1,39 @@
+
+//这题题目写的很模糊
+//意思就是原数组可能不是有序的，我们需要从数组中取出有序的子集
+//注意数组的元素顺序不能动，子集中元素在原数组可以不连续
+
+//不能动原数组的顺序，所以就不能使用最简单的先排序再处理上一个的方法
+//只能使用标记，标记每一层已经使用过的元素，我们用最简单的unordered_set来记录
+
+void backstracking(int starti,vector<int>& nums,vector<int>& path,vector<vector<int>> &result){
+
+    if(path.size()>1) result.push_back(path);
+
+    unordered_set<int> use={};
+
+    for(int i=starti;i<nums.size();++i){
+        
+        if(i>starti&&use.find(nums[i])!=use.end()){//只有从这一层的第二个元素开始才可能重复
+            continue;//没找到，就是没插过
+        }
+        
+        if(path.empty()||(nums[i]>=path[path.size()-1])){//数组是空的，或者新元素大于或等于数组最后一个
+            use.insert(nums[i]);//只有确认放入数组的才需要加入set
+            path.push_back(nums[i]);
+            backstracking(i+1,nums,path,result);
+            path.pop_back();
+        }
+        
+    }
+}
+
+class Solution {
+public:
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        vector<int> path;
+        vector<vector<int>> result;
+        backstracking(0,nums,path,result);
+        return result;
+    }
+};

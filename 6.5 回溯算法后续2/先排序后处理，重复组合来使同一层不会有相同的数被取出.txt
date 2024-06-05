@@ -1,0 +1,28 @@
+
+//带重复的集合找到不重复的子集
+//核心思路和组合相同，都是先排序，然后把同一层的相同情况删除
+//对于不同层的数字可以取出相同的，不影响，也就是starti不修改
+
+void backstracking(int starti,vector<int>& nums,vector<int>& path,vector<vector<int>> &result){
+    //if()//不需要条件，都要
+    result.push_back(path);
+    for(int i=starti;i<nums.size();++i){
+        if(i>starti&&nums[i]==nums[i-1]) continue;
+        path.push_back(nums[i]);
+        backstracking(i+1,nums,path,result);
+        path.pop_back();
+    }
+}
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums){
+
+        vector<int> path;
+        vector<vector<int>> result;
+
+        sort(nums.begin(),nums.end());//先排序
+
+        backstracking(0,nums,path,result);
+        return result;
+    }
+};

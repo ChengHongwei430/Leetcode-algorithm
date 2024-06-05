@@ -1,0 +1,35 @@
+
+//排列问题就是不要starti，但每个元素只能使用一次,一层一次，不同层也只有一次
+//可没说不能用重复，所以不能用排序
+
+//这道题我针对数组的重复情况，使用use去重，使用uest在不同层去重，其实前一个没必要
+
+void backstracking(vector<int>& nums,vector<int>& path,vector<vector<int>> &result,unordered_set<int> &uset){
+    if(path.size()==nums.size()) {
+        result.push_back(path);
+        return;
+    }
+    unordered_set<int> use;
+    for(int i=0;i<nums.size();++i){
+        if(i>0&&use.find(nums[i])!=use.end()) continue;//已经插入过
+        if(uset.find(nums[i])!=use.end()) continue;
+        else{
+            use.insert(nums[i]);
+            uset.insert(nums[i]);
+            path.push_back(nums[i]);
+            backstracking(nums,path,result,uset);
+            path.pop_back();
+            uset.erase(nums[i]);
+        }      
+    }
+}
+class Solution {
+public:
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<int> path;
+        vector<vector<int>> result;
+        unordered_set<int> uset;
+        backstracking(nums,path,result,uset);
+        return result;
+    }
+};
