@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int wiggleMaxLength(vector<int>& nums) {
+
+        int lastd=0;
+        int nowd=0;
+        int counts=1;//即使只要没有变化也有一个
+
+        for(int i=0;i<nums.size()-1;++i){
+            nowd=nums[i+1]-nums[i];
+            if((nowd>0&&lastd<=0)||(nowd<0&&lastd>=0)){
+                //只有第一次lastd==0，后面lastd都是用nowd来更新的，不可能==0
+                counts++;
+                lastd=nowd;
+            }
+        }      
+        return counts;
+    }
+};

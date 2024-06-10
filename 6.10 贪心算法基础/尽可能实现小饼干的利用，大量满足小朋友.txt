@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        
+        //要求是最大的满足人数，所以不必在意是否完美满足
+        //核心思路是用尽可能小的饼干喂满足小胃口，不浪费饼干
+        sort(g.begin(),g.end());
+        sort(s.begin(),s.end());//换成递增
+        int j=0,countper=0;
+
+        for(int i=0;i<s.size();++i){//饼干
+            if(j==g.size()) break;
+            if(s[i]>=g[j]){
+                countper++;
+                j++;//匹配成功，尝试搞定下一个小朋友
+            }
+            //搞定失败只能换更大的饼干
+        }
+        return countper;
+
+    }
+};

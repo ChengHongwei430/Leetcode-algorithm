@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        //这道题需要理解，只要某一个子串的和>0,那这个子串加上什么都是不亏的
+        //不会存在最终子串的前面一部分和<0,这样的情况必然被抛弃
+        //后面一部分和<0无所谓，因为会记录最大值
+        
+        int maxnums=INT32_MIN;
+        int num=0;
+
+        for(int i=0;i<nums.size();++i){
+            num+=nums[i];
+            if(num>maxnums) maxnums=num;//放前面，有可能所有的和都是<0的
+            if(num<=0) num=0;          
+        }
+
+        return maxnums;
+
+    }
+};
