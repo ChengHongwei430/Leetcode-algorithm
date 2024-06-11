@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int len = gas.size();                  
+        for(int i=0;i<len;++i){
+            int have=gas[i]-cost[i];
+            int j=(i+1)%len;
+            while(have>0&&j!=i){
+                have+=gas[j]-cost[j];//能跑完就减去耗油
+                j=(j+1)%len;                
+            }
+            if(j==i&&have>=0) return i; 
+            if(have<0&&j>i){
+                i=j;//跳过一些不需要遍历的加油站
+                i--;//for还在发挥作用，需要退一位 
+            }      
+        }
+        //有时候if判断太多反而会超时
+        //我们需要尽量减少中间变量的使用，把if判断融入while
+        return -1;
+    }
+};
