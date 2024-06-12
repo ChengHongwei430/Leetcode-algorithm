@@ -1,0 +1,37 @@
+static bool cmp(const vector<int>& a, const vector<int>& b) {
+    if (a[0] == b[0]) return a[1] < b[1];
+    return a[0] > b[0];
+}
+
+class Solution {
+public:
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& people) {
+
+        //先按身高排队，然后再按其前面的人数来重新插入，从高到低插
+        //vector 底层的逻辑是数组，插入是非常困难的
+        //本题必须使用插入，因为不能改变相对顺序
+        //list底层结构是链表效果更好
+
+        //sort(people.begin(),people.end());//排序,链表list不能这么排序
+        //reverse(people.begin(),people.end());//从大到小
+        
+        //必须实现h递减，k也递增
+        //k不一样的时候，譬如[5,2]和[5,3], 对于最后排完的数组，
+        //[5,2]必然在[5,3]的前面。所以如果遍历的时候[5,3]在前面，
+        //等它先插入完，这个时候它前面会有3个大于等于它的数组对，
+        //遍历到[5,2]的时候，它必然又会插入[5,3]前面（因为它会插入链表索引为2的地方），
+        //这个时候[5,3]前面就会有4个大于等于它的数组对了，这样就会出错。
+        sort (people.begin(), people.end(), cmp);
+
+        list<vector<int>> lv;
+        //建一个链表来操作
+        for(int i=0;i<people.size();++i){
+            int temp=people[i][1];
+            auto it=lv.begin();
+            while(temp--) it++;//Lv只能用++，不能用+2
+            lv.insert(it,people[i]);                 
+        }
+        return vector<vector<int>>(lv.begin(), lv.end());
+
+    }
+};

@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool lemonadeChange(vector<int>& bills) {
+
+        int memony5=0,memony10=0,memony20=0;
+        for(int i=0;i<bills.size();++i){
+            if(bills[i]==5) memony5++;
+            else if(bills[i]==10){
+                if(memony5>0) memony5--;
+                else return 0;
+                memony10++;
+            }
+            else{
+                if(memony10>0&&memony5>0){
+                    memony5--;
+                    memony10--;
+                    memony20++;
+                    continue;
+                }//优先把10进行找零，能为未来提供更多可能性
+                if(memony5>2){
+                    memony5-=3;
+                    memony20++;
+                    continue;
+                }
+                return 0;
+            }
+        }
+        return 1;
+
+    }
+};
