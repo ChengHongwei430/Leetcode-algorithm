@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> partitionLabels(string s) {
+
+        //确定每一个字符的边界
+        unordered_map<char,int> ma;
+        for(int i=0;i<s.size();++i) ma[s[i]]=i;//确定字符串中字符的边界
+        int maxlen=0;
+        int len=0;
+        vector<int> result;
+        for(int i=0;i<s.size();++i){
+            int temp = ma.find(s[i])->second;
+            maxlen=max(maxlen,temp);找到最大的边界
+            len++;
+            if(maxlen==i){
+                result.push_back(len);
+                len=0;
+            }
+        }
+        return result;
+        
+    }
+};

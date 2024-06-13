@@ -1,0 +1,51 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+int midTree(TreeNode* root,int& result){
+
+    if(!root) return 1;//0表示未覆盖，1表示已经被覆盖，2表示有摄像头
+
+    int ln=midTree(root->left,result);
+    int rn=midTree(root->right,result);
+
+    //if(ln==0&&rn==0) return 2;//孩子没有被覆盖
+    //if(ln==0&&rn==1) return 2;
+    //if(ln==0&&rn==2) return 2;//右边有摄像头也照不到左边
+    //if(ln==1&&rn==0) return 2;
+
+    if(ln==1&&rn==1) return 0;//这个是最难理解的，左右孩子都覆盖，但都没有摄像头，所以未覆盖
+
+    if(ln==1&&rn==2) return 1;//孩子含有摄像头
+    //if(ln==2&&rn==0) return 2;//右边有摄像头也照不到左边
+    if(ln==2&&rn==1) return 1;
+    if(ln==2&&rn==2) return 1;
+
+    result++;
+    return 2;
+
+}
+
+
+class Solution {
+public:
+    int minCameraCover(TreeNode* root) {
+
+        //在二叉树上放摄像头，以最少的摄像头监控整颗树
+        int result=0;
+
+        int x=midTree(root,result);
+
+        if(x==0) result++;//如果最后根节点没有覆盖，加一个摄像机
+
+        return result;
+
+    }
+};
