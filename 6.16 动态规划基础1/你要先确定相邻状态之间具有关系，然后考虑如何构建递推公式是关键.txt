@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int climbStairs(int n) {
+        
+        //找到递推公式,是求解动态规划问题的关键
+        if(n==1) return 1;
+        if(n==2) return 2;
+        vector<int> ve(n+1,0);
+        ve[1]=1;
+        ve[2]=2;//上一楼只有一种方法，二楼有两种
+
+        for(int i=3;i<=n;++i){
+            ve[i]=ve[i-2]+ve[i-1];
+            //核心就是从之前的状态来推理现在的状态
+            //到达n阶只有两种可能，从n-1阶来，或者从n-2阶来
+        }
+
+        return ve[n];
+
+    }
+};
