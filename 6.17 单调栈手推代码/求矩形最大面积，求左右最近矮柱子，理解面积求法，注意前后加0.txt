@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        
+        //这一题最难理解的不是栈元素的含义
+        //反而是为什么可以得到左右最近的第一个低于当前值的柱子可以得到最大面积
+        //必须这样分析，首先如果左右都是高于某柱子的情况，那就可以横向画
+        //直到左右出现小于的情况
+        //也因此计算宽度时，左右矮柱子都不能算
+
+        stack<int> st;
+        int result = 0;
+
+        //与雨水题不同，矩形面积题左右要加0，因为存在柱子找不到比其矮的柱子的情况
+        heights.insert(heights.begin(),0);
+        heights.insert(heights.end(),0);
+        //vector的扩充函数就是在设定的位置扩充
+
+        for(int i=0;i<heights.size();++i){
+
+            while(!st.empty()&&heights[i]<heights[st.top()]){
+                int mid=st.top();
+                st.pop();
+                if(!st.empty()){
+                    int left = st.top();//左边柱子
+                    int right = i;//右边柱子
+                    int h = heights[mid];
+                    int w = right-left-1;//雨水题和矩形面积题都是，宽度左右都不算
+                    result = max(result,h*w);
+                }
+            }
+            st.push(i);//提前写一个入栈，不然容易忘
+
+        }
+
+        return result;
+
+    }
+};

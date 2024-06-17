@@ -1,0 +1,37 @@
+        
+
+
+	//如果使用暴力法，最好按列来看雨水，找高度
+        //找每一列左右最大的列高度
+
+        //使用单调栈就按行来看雨水，找宽度
+        //找每一列左右第一个大于其的高度
+        //只要每一列左边存在大于其的柱子，就一定还在栈内
+
+
+	//理解每个元素的含义很重要
+
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        stack<int> st;
+        int result=0;
+        for(int i=0;i<height.size();++i){
+            while(!st.empty()&&height[i]>height[st.top()]){
+                int mid=st.top();//第一个栈顶是底部高度
+                st.pop();    
+                if(!st.empty()){
+                    int lefth=st.top();//第二个栈顶是左边高度
+                    int h=min(height[i],height[lefth])-height[mid];//行雨水的高度
+                    //右边高度是height[i]
+                    int w=i-lefth-1;//宽度
+                    result+=h*w;
+                }
+                else result+=0;          
+            }
+            st.push(i);
+        }
+        return result;
+    }
+};

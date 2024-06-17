@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        
+        //单调栈用来求右边第一个大于自己的元素，与自己的距离
+        //单调栈很难去宏观理解其含义，最好的方法就是顺着执行过程手推一遍
+
+        stack<int> st;//操作栈
+        vector<int> result(temperatures.size(),0);//存放结果
+
+        for(int i=0;i<temperatures.size();++i){
+            
+            if(st.empty()||temperatures[i]<=temperatures[st.top()]) st.push(i);
+            //当栈为空，或者对比元素小于栈顶元素时入栈
+            else{
+
+                while(!st.empty()&&temperatures[i]>temperatures[st.top()]){
+
+                //这里要注意入栈的是下标，不是元素
+
+		///////最大的容易出错的地方就是栈内元素是下标，不是元素
+
+                    result[st.top()]=i-st.top();
+                    st.pop();//已经存好的元素出栈
+                }
+                st.push(i);
+            }
+
+        }
+        return result;  
+
+    }
+};

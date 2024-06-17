@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {       
+        
+        stack<int> st;//操作栈
+        vector<int> result(nums2.size(),-1);//存放结果
+        for(int i=0;i<nums2.size();++i){          
+            if(st.empty()||nums2[i]<=nums2[st.top()]) st.push(i);
+            //当栈为空，或者对比元素小于栈顶元素时入栈
+            else{
+                while(!st.empty()&&nums2[i]>nums2[st.top()]){
+                //这里要注意入栈的是下标，不是元素
+                    result[st.top()]=nums2[i];
+                    st.pop();//已经存好的元素出栈
+                }
+                st.push(i);
+            }
+        }
+
+        unordered_map<int,int> ma;//无重复的值，下标
+        for(int i=0;i<nums2.size();++i){
+            ma[nums2[i]]=i;
+        }
+
+        vector<int> result1(nums1.size(),-1);//存放结果
+        for(int i=0;i<nums1.size();++i){
+            //result1[i]=result[ma.find(nums1[i])->second];
+            result1[i]=result[ma[nums1[i]]];//居然可以直接用数组的方式来写map
+        }
+
+        return result1; 
+    }
+};
