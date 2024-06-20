@@ -1,0 +1,91 @@
+
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include<unordered_set>
+#include<limits>
+
+using namespace std;
+
+vector<pair<int,int>> dir={{1,0},{-1,0},{0,1},{0,-1}};//四个方向
+
+void dfs(vector<vector<int>> &graph,vector<vector<int>> &visited,int i,int j,int count,int &counts){
+    visited[i][j]=count;//访问标记
+    counts++;
+    for(int k=0;k<dir.size();++k){
+        int x=i+dir[k].first;
+        int y=j+dir[k].second;
+        if(x<0||x>=graph.size()||y<0||y>=graph[0].size()) continue;
+        if(graph[x][y]&&!visited[x][y]){
+            dfs(graph,visited,x,y,count,counts);
+        }
+    }
+}
+
+int main(){
+    
+    int x,y;
+    cin>>x>>y;
+    
+    vector<vector<int>> graph(x,vector<int>(y,0));//表示岛屿地图
+    for(int i=0;i<x;++i){
+        for(int j=0;j<y;++j){
+            cin>>graph[i][j];
+        }
+    }
+
+    vector<vector<int>> visited(x,vector<int>(y,0));//表示节点的访问情况
+
+    int count=0;
+    unordered_map<int,int> ma;
+    for(int i=0;i<x;++i){
+        for(int j=0;j<y;++j){
+            int counts=0;
+            if(graph[i][j]&&!visited[i][j]){
+                count++;
+                dfs(graph,visited,i,j,count,counts);
+                ma[count]=counts;
+            }
+            
+        }
+    }//实现对岛屿的编号,将编号岛屿的面积存入ma
+    
+    
+    int maxg=INT32_MIN;
+    for(int i=0;i<x;++i){
+        for(int j=0;j<y;++j){
+            if(visited[i][j]) continue;//只看水区域
+            unordered_set<int> se;
+            for(int k=0;k<dir.size();++k){//看一看四个方向
+                int x=i+dir[k].first;
+                int y=j+dir[k].second;
+                if(x<0||x>=graph.size()||y<0||y>=graph[0].size()) continue;
+                if(visited[x][y]) se.insert(visited[x][y]);
+            }
+            int tempg=0;
+            for(auto it:se){//auto it 就是整数，不需要解引用
+                tempg+=ma[it];
+            }
+            maxg=max(maxg,tempg);
+        }
+    }
+    if(maxg==INT32_MIN){
+        for(auto t=ma.begin();t!=ma.end();++t) maxg=max(maxg,t->second);
+        cout<<maxg<<endl;//第一题最卑鄙，居然没有水域
+    }
+    else cout<<maxg+1<<endl;
+    
+    /*
+    for(int i=0;i<x;++i){
+        for(int j=0;j<y;++j) 
+        {
+            cout<<visited[i][j];
+            if(j!=y-1)cout<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<ma[2]<<endl;
+    */
+    
+    
+}
